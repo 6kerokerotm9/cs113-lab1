@@ -18,41 +18,50 @@ int main() {
   std::string name;
   bool value1;
   bool value2;
-  std::string choices[4];
+  char exitinput; 
   
-  std::cout << "Hello, please enter your name: ";
-  std::getline(std::cin, name);
-  std::cout << "Welcome, " << name << ", please enter the name for the first proposition: ";
-  std::getline(std::cin, prop1);
-  std::cout << "Please enter the name of the second proposition: ";
-  std::getline(std::cin, prop2);
-  input(choices);
+  while(true) {
+    std::string choices[4];
+    std::cout << "Hello, please enter your name: ";
+    std::getline(std::cin, name);
+    std::cout << "Welcome, " << name << ", please enter the name for the first proposition: ";
+    std::getline(std::cin, prop1);
+    std::cout << "Please enter the name of the second proposition: ";
+    std::getline(std::cin, prop2);
+    input(choices);
 
-  printhead(choices, prop1, prop2);
-  for(int i=3; i>=0; i--){
-    change(&value1, &value2, i);
-    print(value1);
-    print(value2);
-    for(int j=0; j<4; j++){
-      if(choices[j] == "negation") {
-        print(negation(value1));
-        print(negation(value2));
+    printhead(choices, prop1, prop2);
+    for(int i=3; i>=0; i--) {
+      change(&value1, &value2, i);
+      print(value1);
+      print(value2);
+      for(int j=0; j<4; j++){
+        if(choices[j] == "negation") {
+          print(negation(value1));
+          print(negation(value2));
+        }
+        else if(choices[j] == "conjunction") {
+          print(conjunction(value1, value2));
+        }
+        else if(choices[j] == "disjunction") {
+          print(disjunction(value1, value2));
+        }
+        else if(choices[j] == "exclusive or") {
+          print(exclusiveor(value1, value2));
+        }
+        else {
+          break;
+        }
       }
-      else if(choices[j] == "conjunction") {
-        print(conjunction(value1, value2));
-      }
-      else if(choices[j] == "disjunction") {
-        print(disjunction(value1, value2));
-      }
-      else if(choices[j] == "exclusive or") {
-        print(exclusiveor(value1, value2));
-      }
-      else {
-        break;
-      }
+      std::cout << std::endl;
     }
-    std::cout << std::endl;  
-  }  
+    std::cout << "Tables printed. Would you like to quit (y to quit, n to rerun):";
+    std::cin >> exitinput;
+    if(tolower(exitinput) == 'y') {
+     break;
+    }
+    std::cin.ignore();
+  }
 }
   
 bool negation(bool value) {
