@@ -1,3 +1,10 @@
+/*
+Joshua Sjah
+CS 113
+February 6, 2019
+This program prints out truth tables based off of user selected operations. 
+*/
+
 #include <iostream>
 #include <iomanip>
 
@@ -29,7 +36,16 @@ int main() {
     std::cout << "Please enter the name of the second proposition: ";
     std::getline(std::cin, prop2);
     input(choices);
-
+    std::cout << "Thank you. Here is the table for ";
+    for(int i=0; i<4; i++) {
+      if(choices[i+1] == "" || i+1 == 4) {
+        std::cout << choices[i] << "." << std::endl;
+        break;
+      }
+      else {
+        std::cout << choices[i] << ", ";
+      }
+    }
     printhead(choices, prop1, prop2);
     for(int i=3; i>=0; i--) {
       change(&value1, &value2, i);
