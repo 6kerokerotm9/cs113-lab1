@@ -16,7 +16,10 @@ bool exclusiveor(bool, bool);
 void print(bool);
 void change(bool *, bool *, int); 
 void printhead(std::string[], std::string, std::string);
+void printhead(std::string[], std::string);
 void input(std::string[]);
+void onevars(std::string[], std::string, std::string, bool, bool);
+void twovars(std::string[], std::string, std::string, bool, bool);
 
 int main() {
   //variable declarations
@@ -32,8 +35,8 @@ int main() {
     std::cout << "Hello, please enter your name: ";
     std::getline(std::cin, name);
     std::cout << "Welcome, " << name << ", please enter the name for the first proposition: ";
-    std::getline(std::cin, prop1);
-    std::cout << "Please enter the name of the second proposition: ";
+    std::getline(std::cin, prop1);   
+    std::cout << "Please enter the name of the second proposition (press enter if you only want one proposition): ";
     std::getline(std::cin, prop2);
     input(choices);
     std::cout << "Thank you. Here is the table for ";
@@ -46,30 +49,11 @@ int main() {
         std::cout << choices[i] << ", ";
       }
     }
-    printhead(choices, prop1, prop2);
-    for(int i=3; i>=0; i--) {
-      change(&value1, &value2, i);
-      print(value1);
-      print(value2);
-      for(int j=0; j<4; j++){
-        if(choices[j] == "negation") {
-          print(negation(value1));
-          print(negation(value2));
-        }
-        else if(choices[j] == "conjunction") {
-          print(conjunction(value1, value2));
-        }
-        else if(choices[j] == "disjunction") {
-          print(disjunction(value1, value2));
-        }
-        else if(choices[j] == "exclusive or") {
-          print(exclusiveor(value1, value2));
-        }
-        else {
-          break;
-        }
-      }
-      std::cout << std::endl;
+    if(prop2 == "") {
+      onevars(choices, prop1, prop2, value1, value2);
+    }
+    else {
+      twovars(choices, prop1, prop2, value1, value2);
     }
     std::cout << "Tables printed. Would you like to quit (y to quit, n to rerun):";
     std::cin >> exitinput;
@@ -149,6 +133,19 @@ void printhead(std::string choices[], std::string prop1, std::string prop2) {
   std::cout << std::endl;
 }
 
+void printhead(std::string choices[], std::string prop1) {
+  std::cout << std::setw(20) << std::left << prop1;
+  for(int i=0; i<4; i++) {
+    if(choices[i] == "negation") {
+      std::cout << std::setw(20) << std::left << "~" + prop1 << std::setw(20) << std::left;
+    }
+    else {
+      std::cout << std::setw(20) << std::left << choices[i]  << std::setw(20) << std::left; 
+    }
+  }
+  std::cout << std::endl;
+}
+
 void input(std::string choices[]) {
   std::string temp;
   int size = 0;
@@ -184,4 +181,60 @@ void input(std::string choices[]) {
       }
     }
   }
+}
+
+void onevars(std::string choices[], std::string prop1, std::string prop2, bool value1, bool value2) {
+  printhead(choices, prop1);
+  int temp = 3;
+    for(int i=1; i>=0; i--) {
+      change(&value1, &value2, temp);
+      temp -= 3;
+      print(value1);
+      for(int j=0; j<4; j++){
+        if(choices[j] == "negation") {
+          print(negation(value1));
+        }
+        else if(choices[j] == "conjunction") {
+          print(conjunction(value1, value1));
+        }
+        else if(choices[j] == "disjunction") {
+          print(disjunction(value1, value1));
+        }
+        else if(choices[j] == "exclusive or") {
+          print(exclusiveor(value1, value1));
+        }
+        else {
+          break;
+        }
+      }
+      std::cout << std::endl;
+    }
+}
+
+void twovars(std::string choices[], std::string prop1, std::string prop2, bool value1, bool value2) {
+  printhead(choices, prop1, prop2);
+    for(int i=3; i>=0; i--) {
+      change(&value1, &value2, i);
+      print(value1);
+      print(value2);
+      for(int j=0; j<4; j++){
+        if(choices[j] == "negation") {
+          print(negation(value1));
+          print(negation(value2));
+        }
+        else if(choices[j] == "conjunction") {
+          print(conjunction(value1, value2));
+        }
+        else if(choices[j] == "disjunction") {
+          print(disjunction(value1, value2));
+        }
+        else if(choices[j] == "exclusive or") {
+          print(exclusiveor(value1, value2));
+        }
+        else {
+          break;
+        }
+      }
+      std::cout << std::endl;
+    }
 }
